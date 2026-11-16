@@ -1,0 +1,51 @@
+### SG-smoothed + SNV (uncalibrated) -- raw_dn_spectra_PROVISIONAL_SG_SNV.csv ###
+train samples: 20, test samples: 8
+
+============================================================
+CLASSIFICATION -- Random Forest, predicting class_label from 228 bands (SG-smoothed + SNV (uncalibrated))
+============================================================
+
+Test accuracy: 0.875  (7/8)
+
+Confusion matrix (rows=true, cols=predicted):
+              pred_control  pred_50ppm  pred_100ppm  pred_150ppm
+true_control             1           0            0            1
+true_50ppm               0           2            0            0
+true_100ppm              0           0            2            0
+true_150ppm              0           0            0            2
+
+Per-class precision/recall/F1:
+              precision    recall  f1-score   support
+
+     control       1.00      0.50      0.67         2
+       50ppm       1.00      1.00      1.00         2
+      100ppm       1.00      1.00      1.00         2
+      150ppm       0.67      1.00      0.80         2
+
+    accuracy                           0.88         8
+   macro avg       0.92      0.88      0.87         8
+weighted avg       0.92      0.88      0.87         8
+
+
+CAVEAT: These metrics are expected to be inflated by the class/session date confound documented in PROJECT_NOTES.md -- each class was captured on a different single day, so the model may be learning acquisition-session differences rather than true pesticide signal. Do not interpret these numbers as real detection performance until calibration is resolved and/or a session-balanced dataset is available.
+
+============================================================
+REGRESSION -- PLSR, predicting nominal ppm from 228 bands (SG-smoothed + SNV (uncalibrated))
+============================================================
+
+PLSR (n_components=5)
+Test R^2:   0.848
+Test RMSE:  21.8 ppm
+
+Per-sample predictions (test set):
+       sample_id class_label  true_ppm  predicted_ppm
+      Control_16     control       0.0          -19.0
+      Control_19     control       0.0            0.9
+  Clp_25_cont_16       50ppm      50.0           80.4
+  Clp_25_cont_19       50ppm      50.0           73.7
+ Clp_50_cont__16      100ppm     100.0          102.6
+ Clp_50_cont__19      100ppm     100.0          110.2
+Clp_150p_Cont_16      150ppm     150.0          115.5
+Clp_150p_Cont_19      150ppm     150.0          124.5
+
+CAVEAT: These metrics are expected to be inflated by the class/session date confound documented in PROJECT_NOTES.md -- each class was captured on a different single day, so the model may be learning acquisition-session differences rather than true pesticide signal. Do not interpret these numbers as real detection performance until calibration is resolved and/or a session-balanced dataset is available.
